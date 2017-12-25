@@ -75,10 +75,10 @@ TEST(Lexem, can_create_number_lexem)
 
 TEST(Lexem, can_create_number_lexem_2)
 {
-	std::string str="123";
+	std::string str="-123";
 	Lexem t(str);
 
-	EXPECT_EQ(123, t.Val);
+	EXPECT_EQ(-123, t.Val);
 	EXPECT_EQ(NUMBER, t.type);
 }
 
@@ -178,19 +178,19 @@ TEST(Arithmetic, can_create_arithmetic)
 
 TEST(Arithmetic, created_arithmetic_is_right)
 {
-	std::string str="-1+5*(2-1)/88.8";
+	string str="-1+5*(2-1)/88.8";
 	Arithmetic t(str);
 
-	EXPECT_EQ(12, t.GetnLex());
+	EXPECT_EQ(11, t.GetnLex());
 
-	char c1='-', c2='1', c3='+', c4='5';
-	char c5='*', c6='(', c7='2', c8='-';
-	char c9='1', c10=')', c11='/';
-	std::string c12="88.8";
+	char c2='+', c3='5';
+	char c4='*', c5='(', c6='2', c7='-';
+	char c8='1', c9=')', c10='/';
+	string c1="-1", c11="88.8";
 	
-	Lexem z1(c1), z2(c2), z3(c3), z4(c4);
-	Lexem z5(c5), z6(c6), z7(c7), z8(c8);
-	Lexem z9(c9), z10(c10), z11(c11), z12(c12);
+	Lexem z1(c1), z2(c2), z3(c3);
+	Lexem z4(c4), z5(c5), z6(c6), z7(c7);
+	Lexem z8(c8), z9(c9), z10(c10), z11(c11);
 
 	EXPECT_EQ(z1, t.GetLex(1));
 	EXPECT_EQ(z2, t.GetLex(2));
@@ -203,7 +203,20 @@ TEST(Arithmetic, created_arithmetic_is_right)
 	EXPECT_EQ(z9, t.GetLex(9));
 	EXPECT_EQ(z10, t.GetLex(10));
 	EXPECT_EQ(z11, t.GetLex(11));
-	EXPECT_EQ(z12, t.GetLex(12));
+
+	str="(-9-8)";
+	Arithmetic t1(str);
+	string c="-9";
+
+	Lexem v1('('), v2(c), v3('-'), v4('8'), v5(')');
+
+	EXPECT_EQ(5, t1.GetnLex());
+
+	EXPECT_EQ(v1, t1.GetLex(1));
+	EXPECT_EQ(v2, t1.GetLex(2));
+	EXPECT_EQ(v3, t1.GetLex(3));
+	EXPECT_EQ(v4, t1.GetLex(4));
+	EXPECT_EQ(v5, t1.GetLex(5));
 }
 
 TEST(Arithmetic, can_not_create_arithmetic_from_empty_string)
@@ -218,18 +231,15 @@ TEST(Arithmetic, can_get_nLex)
 	std::string str="-1+5*(2-1)/88.8";
 	Arithmetic t(str);
 
-	EXPECT_EQ(12, t.GetnLex());
+	EXPECT_EQ(11, t.GetnLex());
 }
 
 TEST(Arithmetic, can_get_lexem)
 {
-	std::string str="-1+5*(2-1)/88.8";
+	std::string str="-1+5*(-2-1)/88.8";
 	Arithmetic t(str);
-
-	char c='*';
-	Lexem z(c);
-
-	EXPECT_EQ(z, t.GetLex(5));
+	
+	EXPECT_EQ(-1, t.GetLex(1).Val);
 }
 
 TEST(Arithmetic, can_not_get_lexem_with_wrong_index)
@@ -252,10 +262,10 @@ TEST(Arithmetic, can_not_get_null_lexem_or_lexem_with_negative_index)
 
 TEST(Arithmetic, can_make_polish_entry)
 {
-	std::string str="2-1";
+	std::string str="(-2-1)";
 	Arithmetic t(str);
 
-	EXPECT_EQ(3, t.GetnLex());
+	EXPECT_EQ(5, t.GetnLex());
 
 	ASSERT_NO_THROW(t.PolEnt());
 }
@@ -348,7 +358,7 @@ TEST(Arithmetic, can_compare_arithmetic)
 
 TEST(Arithmetic, can_calculate_polish_entry)
 {
-	std::string str="5-8";
+	std::string str="(-5-8)";
 	Arithmetic t(str);
 
 	t.PolEnt();
@@ -456,7 +466,7 @@ TEST(Arithmetic, can_check_letters)
 
 TEST(Arithmetic, can_check_operators)
 {
-	string str="2-3";
+	string str="(-2-3)";
 	Arithmetic t(str);
 
 	EXPECT_EQ(true, t.CheckOperators());

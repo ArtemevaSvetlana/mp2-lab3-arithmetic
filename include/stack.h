@@ -25,7 +25,7 @@ class TStack
 	protected:
 		T *pStack;
 		int Size;
-		int Top;
+		int Top;	//индес последнего эл-та
 	public:
 		TStack(int s);
 		TStack(const TStack &st);//конструктор копирования
@@ -65,7 +65,7 @@ TStack<T>::TStack(const TStack &st)
 	Size=st.Size;
 	Top=st.Top;
 	pStack= new T[Size];
-	for (int i=0;i<Top+1;i++)
+	for (int i=0;i<Top;i++)
 		pStack[i]=st.pStack[i];
 }
 

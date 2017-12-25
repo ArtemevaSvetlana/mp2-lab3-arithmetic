@@ -37,8 +37,8 @@ int main()
 
 				while ((str==""))
 				{
-					cout<<"\n"<<"Expression is empty! Try again!";
 					system("cls");
+					cout<<"\n"<<"Expression is empty! Try again!";
 					cout<<"Enter an expression. Remember you can use only '+', '-', '*' and '/' operations."<<endl;
 					cout<<"\n";
 					cin>>str;
@@ -46,10 +46,21 @@ int main()
 				Arithmetic t(str);
 				if (!t.CheckAll())
 				{
+					system("cls");
+
 					cout<<"\n"<<"There were errors in your expression."<<endl;
-					cout<<"\n"<<"If you want to try again input 1."<<endl;
+					cout<<"\n"<<"\n"<<"If you want to try again input 1."<<endl;
 					cout<<"\n"<<"If you want to finish input 2."<<endl;
 					cin>>j;
+
+					while ((j!=1) && (j!=2))
+					{
+						system("cls");
+						cout<<"\n"<<"There is no such command! Try again!"<<endl;
+						cout<<"\n"<<"1 - Enter an expression."<<endl;
+						cout<<"2 - Exit."<<endl;
+						cin>>j;
+					}
 					k=j;
 				}
 				else
@@ -61,6 +72,17 @@ int main()
 					cout<<"\n"<<"1-Try again."<<endl;
 					cout<<"\n"<<"2-Exit."<<endl;
 					cin>>j;
+
+					while ((j!=1) && (j!=2))
+					{
+						system("cls");
+						cout<<"\n"<<"There is no such command! Try again!"<<endl;
+						cout<<"\n"<<"Input the command:"<<endl;
+						cout<<"\n"<<"1-Try again."<<endl;
+						cout<<"\n"<<"2-Exit."<<endl;
+						cin>>j;
+					}
+
 					k=j;
 					flag=true;
 				}
@@ -73,8 +95,10 @@ int main()
 			}
 			default:
 			{
+				system("cls");
 				flag=false;
 				cout<<"\n"<<"There is no such command! Try again!"<<endl;
+				break;
 			}
 		}
 	}

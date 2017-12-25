@@ -83,9 +83,14 @@ Lexem::Lexem(char c)
 
 Lexem::Lexem(const string &s)	//creating numbers_lexem
 {
-	
 	int k=0;
-	for (unsigned int i=0;i<s.length();i++)
+	unsigned int i=0;
+	if (s[0]=='-') 
+	{
+			k++;
+			i++;
+	}
+	for (i; i<s.length(); i++)
 	{	
 		if ((isdigit(s[i])) || (s[i]=='.'))
 			k++;
@@ -157,21 +162,42 @@ Arithmetic::Arithmetic(const string &s)
 	flag=false;
 	str=s;
 	int Size=s.length();
-	pLex=new Lexem[Size];
+	pLex=new Lexem[2*Size];
 	
 	std::string s1;
 	int k=0;		//nLex
 	char c;
 
-	for (int i=0;i<Size;i++)
+	bool un=false;
+	int i=0;
+
+	if ( (str[0]=='-') && (isdigit(str[1])) )
 	{
+		un=true;
+		i++;
+	}
+
+	for (int i=0; i<Size; i++)
+	{	
+
+		if ((str[i]=='-') && (str[i-1]=='('))
+		{
+			un=true;
+			i++;
+		}
 		int j=i;
-		
 		c=str[j];
 		if (isdigit(c))
 		{
 			while (((isdigit(str[j])) || (str[j]=='.')) && (j<Size))
 					j++;
+			
+			if (un)
+			{
+				i--;
+				un=false;
+			}
+			
 			s1=str.substr(i,j-i);
 			Lexem t(s1);
 			pLex[k]=t;
@@ -179,8 +205,8 @@ Arithmetic::Arithmetic(const string &s)
 		}
 		else
 		{
-			Lexem t(c);
-			pLex[k]=t;
+			Lexem t(c);			
+			pLex[k]=t;	
 		} 
 
 		k++;
@@ -314,9 +340,7 @@ void Arithmetic::PolEnt()
 	while (!stack.IsEmpty())
 		polLex[j++]=stack.Pop();
 
-	if (j==0)
-		throw "Error!";
-	else
+	
 		npolLex=j;
 }
  
@@ -453,7 +477,7 @@ bool Arithmetic::CheckOperators()
 		{
 			if ((next.type==LEFTBR) || (next.type==NUMBER))
 			{
-				cout<<"\n"<<s<<i+1<<" symbol"<<endl;
+				cout<<"\n"<<s<<i+1<<" term"<<endl;
 				return false;
 			}
 		}
@@ -462,7 +486,7 @@ bool Arithmetic::CheckOperators()
 		{
 			if ((next.type==OPERATOR) || (next.type==RIGHTBR))
 			{
-				cout<<"\n"<<s<<i+1<<" symbol"<<endl;
+				cout<<"\n"<<s<<i+2<<" term"<<endl;
 				return false;
 			}
 
@@ -478,9 +502,9 @@ bool Arithmetic::CheckOperators()
 
 		else if (cur.type==LEFTBR)
 		{
-			if ((next.type==OPERATOR) || (next.type==RIGHTBR))
+			if ( ( (next.type==OPERATOR) && (next.Op!=2) )  || (next.type==RIGHTBR))
 			{
-				cout<<"\n"<<s<<i+1<<" symbol"<<endl;
+				cout<<"\n"<<s<<i+2<<" term"<<endl;
 				return false;
 			}
 		}
@@ -489,7 +513,7 @@ bool Arithmetic::CheckOperators()
 		{
 			if ((next.type==LEFTBR) || (next.type==NUMBER))
 			{
-				cout<<"\n"<<s<<i+1<<" symbol"<<endl;
+				cout<<"\n"<<s<<i+2<<" term"<<endl;
 				return false;
 			}
 		}
@@ -497,7 +521,7 @@ bool Arithmetic::CheckOperators()
 
 	if ((pLex[nLex-1].type==OPERATOR) || (pLex[nLex-1].type==LEFTBR))
 	{
-		cout<<"\n"<<s<<nLex<<" symbol"<<endl;
+		cout<<"\n"<<s<<nLex<<" term"<<endl;
 		return false;
 	}
 	else
