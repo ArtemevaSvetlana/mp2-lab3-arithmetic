@@ -65,7 +65,7 @@ TStack<T>::TStack(const TStack &st)
 	Size=st.Size;
 	Top=st.Top;
 	pStack= new T[Size];
-	for (int i=0;i<Top;i++)
+	for (int i=0;i<Top+1;i++)
 		pStack[i]=st.pStack[i];
 }
 
@@ -128,8 +128,7 @@ void TStack<T>::Push(T elem)		//вставить эл-нт
 template <class T>
 bool TStack<T>::operator==(const TStack<T> &st) const
 {
-	
-		if ((Size==st.Size)&&(Top==st.Top))
+	if ((Size==st.Size)&&(Top==st.Top))
 	{
 			for (int i=0;i<Top+1;i++)
 			{

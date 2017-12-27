@@ -251,13 +251,12 @@ TEST(Arithmetic, can_not_get_lexem_with_wrong_index)
 	ASSERT_ANY_THROW(t.GetLex(4));
 }
 
-TEST(Arithmetic, can_not_get_null_lexem_or_lexem_with_negative_index)
+TEST(Arithmetic, can_not_get_lexem_with_negative_index)
 {
 	std::string str="2-1";
 	Arithmetic t(str);
 
 	ASSERT_ANY_THROW(t.GetLex(-7));
-	ASSERT_ANY_THROW(t.GetLex(0));
 }
 
 TEST(Arithmetic, can_make_polish_entry)
@@ -392,14 +391,6 @@ TEST(Arithmetic, calculating_is_right)
 	EXPECT_EQ(-15, t4.CalcPolEntr());
 }
 
-TEST(Arithmetic, can_not_calculate_dividing_by_zero)
-{
-	std::string str="5-3*9+(1-2/0)+4";
-	Arithmetic t(str);
-	t.PolEnt();
-
-	ASSERT_ANY_THROW(t.CalcPolEntr());
-}
 
 TEST(Arithmetic, can_not_calculate_withot_numbers_and_operators)
 {

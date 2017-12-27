@@ -171,16 +171,26 @@ Arithmetic::Arithmetic(const string &s)
 	bool un=false;
 	int i=0;
 
-	if ( (str[0]=='-') && (isdigit(str[1])) )
+	if (str[0]=='-')
 	{
+		if (isdigit(str[1]))
+		{
 		un=true;
 		i++;
+		}
+		else if (str[1]=='(')
+		{
+			string ss="0";
+			ss=ss+str;
+			str=ss;
+			Size++;
+		}
 	}
-
-	for (int i=0; i<Size; i++)
+	
+	for (i; i<Size; i++)
 	{	
 
-		if ((str[i]=='-') && (str[i-1]=='('))
+		if ((str[i]=='-') && (str[i-1]=='(') && (!un))
 		{
 			un=true;
 			i++;
@@ -383,10 +393,7 @@ double Arithmetic::CalcPolEntr()
 					}
 					case 4:
 					{
-						if (a==0.0)
-							throw "Error!";
-						else
-							res=b/a;
+						res=b/a;
 						break;
 					}
 				}
@@ -408,7 +415,7 @@ int Arithmetic::GetnPolLex()
 
 Lexem Arithmetic::GetPolLex(int n)
 {
-	if ((n<1) || (npolLex==0) || (n>npolLex))
+	if ((n<1)  || (n>npolLex))
 		throw "Error!";
 
 	return polLex[n-1];

@@ -31,9 +31,13 @@ TEST(TStack, copied_stack_is_equal_to_source_one)
 		st1.Push(1);
 		st1.Push(3);
 		st1.Push(2);
+
 	TStack<int> st2(st1);
 
 	EXPECT_EQ(st1, st2);
+	EXPECT_EQ(2, st2.Pop());
+	EXPECT_EQ(3, st2.Pop());
+	EXPECT_EQ(1, st2.Pop());
 }
 
 TEST(TStack, can_pop_elem)
